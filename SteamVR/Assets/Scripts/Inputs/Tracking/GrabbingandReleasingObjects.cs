@@ -31,7 +31,7 @@ public class GrabbingandReleasingObjects : MonoBehaviour
     }
 
     //create parentchild relationship between object and hand so object follows hand
-    void GrabObject() 
+    public void GrabObject() 
     {
         objectGrabbed = true;
         objectReleased = false;
@@ -41,7 +41,7 @@ public class GrabbingandReleasingObjects : MonoBehaviour
     }
 
     //removing parentchild relationship so you drop the object
-    void ReleaseObject()
+    public void ReleaseObject()
     {
         objectReleased = true;
         objectGrabbed = false;

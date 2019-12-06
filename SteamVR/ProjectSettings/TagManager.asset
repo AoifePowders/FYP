@@ -16,6 +16,8 @@ TagManager:
   - Button
   - Dial
   - Hand
+  - projectile
+  - DistanceGrab
   layers:
   - Default
   - TransparentFX
