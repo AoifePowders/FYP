@@ -20,6 +20,7 @@ TagManager:
   - DistanceGrab
   - FxTemporaire
   - TeleportIgnore
+  - ropePart
   layers:
   - Default
   - TransparentFX
@@ -30,8 +31,8 @@ TagManager:
   - 
   - 
   - BatFollower
-  - 
-  - 
+  - Hands
+  - Head
   - 
   - 
   - 

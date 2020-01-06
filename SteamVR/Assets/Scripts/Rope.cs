@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Rope : MonoBehaviour
 {
-    public GameObject partPrefab, parentObject;
+    public GameObject partPrefab, parentObject, ballObject;
     
     public int length = 1;
 
@@ -35,18 +35,23 @@ public class Rope : MonoBehaviour
 
     public void Spawn()
     {
-        int count = (int)(length / partDistance);
-
         for(int i = 0; i < length; i++)
         {
             GameObject temp;
+            if (i == length - 1)
+            {
+                temp = Instantiate(ballObject, new Vector3(transform.position.x, transform.position.y + partDistance * (i + 1), transform.position.z), Quaternion.identity, parentObject.transform);
+                temp.GetComponent<CharacterJoint>().connectedBody = parentObject.transform.Find((parentObject.transform.childCount - 1).ToString()).GetComponent<Rigidbody>();
+            }
+            else
+            {
+                temp = Instantiate(partPrefab, new Vector3(transform.position.x, transform.position.y + partDistance * (i + 1), transform.position.z), Quaternion.identity, parentObject.transform);
+                temp.transform.eulerAngles = new Vector3(180, 0, 0);
 
-            temp = Instantiate(partPrefab, new Vector3(transform.position.x, transform.position.y + partDistance * (i + 1), transform.position.z), Quaternion.identity, parentObject.transform);
-            temp.transform.eulerAngles = new Vector3(180, 0, 0);
+                temp.name = parentObject.transform.childCount.ToString();
+            }
 
-            temp.name = parentObject.transform.childCount.ToString();
-
-            if(i == 0)
+            if (i == 0)
             {
                 Destroy(temp.GetComponent<CharacterJoint>());
                 if (snapFirst)
@@ -58,11 +63,14 @@ public class Rope : MonoBehaviour
             {
                 temp.GetComponent<CharacterJoint>().connectedBody = parentObject.transform.Find((parentObject.transform.childCount - 1).ToString()).GetComponent<Rigidbody>();
             }
+
         }
 
         if (snapLast)
         {
             parentObject.transform.Find((parentObject.transform.childCount).ToString()).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         }
+
+        
     }
 }
