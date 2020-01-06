@@ -18,6 +18,8 @@ TagManager:
   - Hand
   - projectile
   - DistanceGrab
+  - FxTemporaire
+  - TeleportIgnore
   layers:
   - Default
   - TransparentFX

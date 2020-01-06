@@ -49,7 +49,7 @@ public class FindVelocity : MonoBehaviour
 
         if (garoRight.objectReleased || garoLeft.objectReleased)
         {
-            rb.AddForce(throwVelocity, ForceMode.VelocityChange);
+            rb.AddForce(throwVelocity * 10, ForceMode.Impulse);
         }
     }
 }

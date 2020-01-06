@@ -17,16 +17,6 @@ public class Dialrotation : MonoBehaviour
 
     private void Update()
     {
-        //if(transform.rotation.z > 90.0f)
-        //{
-        //    transform.rotation = Quaternion.Euler(0.0f, 0.0f, 90.0f);
-        //}
-
-        //if (transform.rotation.z < -90.0f)
-        //{
-        //    transform.rotation = Quaternion.Euler(0.0f, 0.0f, -90.0f);
-        //}
-
         if(collision == true)
         {
             eulerRotation = new Vector3(0.0f, 0.0f, collidedObj.transform.eulerAngles.z);

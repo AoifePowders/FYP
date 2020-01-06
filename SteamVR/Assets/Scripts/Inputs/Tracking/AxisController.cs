@@ -22,7 +22,7 @@ public class AxisController : MonoBehaviour
         { "indexFinger", CommonUsages.indexFinger },
         { "middleFinger", CommonUsages.middleFinger },
         { "ringFinger", CommonUsages.ringFinger },
-        { "pinkyFinger", CommonUsages.pinkyFinger },
+        { "pinkyFinger", CommonUsages.pinkyFinger }
     };
 
     public enum FeatureOptions
@@ -34,7 +34,7 @@ public class AxisController : MonoBehaviour
         indexFinger,
         middleFinger,
         ringFinger,
-        pinkyFinger,
+        pinkyFinger
     };
 
     //creates a drop down menu in unity inspector 
@@ -61,7 +61,7 @@ public class AxisController : MonoBehaviour
     //devices that are detected
     List<InputDevice> devices;
 
-    //kepps velue of button press
+    //kepps value of button press
     float inputValue;
 
     //selected feature object (button)

@@ -6,13 +6,10 @@ public class GrabbingandReleasingObjects : MonoBehaviour
 {
     // identifying objects
     GameObject CollidingObject;
-    GameObject objectInHand = null;
+    public GameObject objectInHand = null;
 
     public bool objectGrabbed = false;
     public bool objectReleased = false;
-
-
-
 
     //when the controllers collide with the grabbable object
     //picking up objects with rigidbodies
