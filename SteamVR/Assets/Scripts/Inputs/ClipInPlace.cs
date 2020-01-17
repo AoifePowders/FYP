@@ -37,13 +37,19 @@ public class ClipInPlace : MonoBehaviour
     {
         if (other.gameObject.tag == "grabbable")
         {
-            if (released)
-            {
-                other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                Debug.Log("collision and released");
-                other.transform.position = transform.position;
-                other.transform.rotation = transform.rotation;              
-            }
+            Destroy(other.gameObject.GetComponent<Rigidbody>());
+            other.transform.position = transform.position;
+            other.transform.rotation = transform.rotation;
+        }
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "grabbable")
+        {
+            other.gameObject.AddComponent<Rigidbody>();
+            other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            other.gameObject.GetComponent<Rigidbody>().useGravity = true;
         }
     }
 }

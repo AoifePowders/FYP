@@ -33,6 +33,6 @@ public class Locomotion : MonoBehaviour
     public void Rotate()
     {
         Quaternion newRotation = Quaternion.AngleAxis(45, Vector3.up);
-        player.transform.rotation = Quaternion.Slerp(player.transform.rotation, newRotation, 1f);
+        player.transform.rotation = Quaternion.Slerp(player.transform.rotation, player.transform.rotation * newRotation, 1f);
     }
 }

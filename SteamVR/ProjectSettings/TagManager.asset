@@ -21,6 +21,8 @@ TagManager:
   - FxTemporaire
   - TeleportIgnore
   - ropePart
+  - Drawer
+  - 2HandGrab
   layers:
   - Default
   - TransparentFX

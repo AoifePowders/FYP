@@ -12,13 +12,19 @@ public class DoorGrabbable : MonoBehaviour
     GrabbingandReleasingObjects garoRight;
     GrabbingandReleasingObjects garoLeft;
 
-     private void Start()
+    Vector3 startPosition;
+    GameObject drawer;
+
+    private void Start()
     {
         right = FindObjectOfType<GameManager>().rightHand;
         left = FindObjectOfType<GameManager>().leftHand;
 
         garoRight = right.GetComponent<GrabbingandReleasingObjects>();
         garoLeft = left.GetComponent<GrabbingandReleasingObjects>();
+
+        drawer = GameObject.FindGameObjectWithTag("Drawer");
+        startPosition = drawer.transform.position;
     }
 
     void Update()
@@ -27,7 +33,10 @@ public class DoorGrabbable : MonoBehaviour
         {
             transform.position = handle.transform.position;
             transform.rotation = handle.transform.rotation;
+            drawer.transform.position = startPosition;     
         }
+
+        this.GetComponent<Rigidbody>().useGravity = false;
     }
 
 }

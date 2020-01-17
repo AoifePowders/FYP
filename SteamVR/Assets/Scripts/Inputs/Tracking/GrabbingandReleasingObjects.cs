@@ -11,11 +11,32 @@ public class GrabbingandReleasingObjects : MonoBehaviour
     public bool objectGrabbed = false;
     public bool objectReleased = false;
 
+    FixedJoint joint;
+    public GameObject hand;
+
+    private void Start()
+    {
+        joint = transform.GetComponent<FixedJoint>();
+    }
+
+    private void FixedUpdate()
+    {
+        if (objectInHand != null)
+        {
+            if (objectGrabbed && !objectReleased)
+            {
+                objectInHand.transform.position = hand.transform.position;
+                objectInHand.transform.rotation = hand.transform.rotation;
+                objectInHand.GetComponent<Rigidbody>().useGravity = false;
+                objectInHand.GetComponent<Rigidbody>().isKinematic = true;
+            }
+        }
+    }
     //when the controllers collide with the grabbable object
     //picking up objects with rigidbodies
-    public void OnTriggerEnter(Collider other) 
+    public void OnTriggerStay(Collider other) 
     {
-        if (other.gameObject.GetComponent<Rigidbody>() && other.gameObject.tag == "grabbable")
+        if (other.gameObject.GetComponent<Rigidbody>() && other.gameObject.tag == "grabbable" || other.gameObject.tag == "2HandGrab")
         {
             CollidingObject = other.gameObject;    
         }
@@ -33,8 +54,7 @@ public class GrabbingandReleasingObjects : MonoBehaviour
         objectGrabbed = true;
         objectReleased = false;
         objectInHand = CollidingObject;
-        objectInHand.transform.SetParent(this.transform);
-        objectInHand.GetComponent<Rigidbody>().isKinematic = true;
+        joint.connectedBody = objectInHand.GetComponent<Rigidbody>();
     }
 
     //removing parentchild relationship so you drop the object
@@ -42,8 +62,12 @@ public class GrabbingandReleasingObjects : MonoBehaviour
     {
         objectReleased = true;
         objectGrabbed = false;
-        objectInHand.GetComponent<Rigidbody>().isKinematic = false;
-        objectInHand.transform.SetParent(null);
+        if (objectInHand != null)
+        {
+            objectInHand.GetComponent<Rigidbody>().useGravity = true;
+            objectInHand.GetComponent<Rigidbody>().isKinematic = false;
+        }
+        joint.connectedBody = null;
         objectInHand = null;
     }
 
