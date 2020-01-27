@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR;
+using Valve.VR.InteractionSystem;
 
 public class GrabbingandReleasingObjects : MonoBehaviour
 {
@@ -13,6 +15,23 @@ public class GrabbingandReleasingObjects : MonoBehaviour
 
     FixedJoint joint;
     public GameObject hand;
+   
+    private SteamVR_TrackedObject trackedObj;
+    private SteamVR_Controller.Device Controller
+    {
+        get
+        {
+            return SteamVR_Controller.Input((int)trackedObj.index);
+        }
+    }    
+
+    Vector3 velocity;
+    Vector3 angularVelocity;
+
+    void Awake()
+    {
+        trackedObj = GetComponent<SteamVR_TrackedObject>();
+    }
 
     private void Start()
     {
@@ -21,17 +40,23 @@ public class GrabbingandReleasingObjects : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (objectInHand != null)
-        {
-            if (objectGrabbed && !objectReleased)
-            {
-                objectInHand.transform.position = hand.transform.position;
-                objectInHand.transform.rotation = hand.transform.rotation;
-                objectInHand.GetComponent<Rigidbody>().useGravity = false;
-                objectInHand.GetComponent<Rigidbody>().isKinematic = true;
-            }
-        }
+        //if (objectInHand != null)
+        //{
+        //    if (objectGrabbed && !objectReleased)
+        //    {
+        //        objectInHand.transform.position = hand.transform.position;
+        //        objectInHand.transform.rotation = hand.transform.rotation;
+        //        objectInHand.GetComponent<Rigidbody>().useGravity = false;
+        //        objectInHand.GetComponent<Rigidbody>().isKinematic = true;
+        //    }
+        //}
+
+        velocity = Controller.velocity;
+        //angularVelocity = Controller.angularVelocity;
+        Debug.Log("Controller Velocity!" + velocity);
+        Debug.Log(Controller);
     }
+
     //when the controllers collide with the grabbable object
     //picking up objects with rigidbodies
     public void OnTriggerStay(Collider other) 
@@ -72,4 +97,3 @@ public class GrabbingandReleasingObjects : MonoBehaviour
     }
 
 }
-
