@@ -15,6 +15,8 @@ public class GrabbingandReleasingObjects : MonoBehaviour
 
     FixedJoint joint;
     public GameObject hand;
+
+    Vector3 velo = new Vector3();
    
     private SteamVR_TrackedObject trackedObj;
     private SteamVR_Controller.Device Controller
@@ -25,36 +27,36 @@ public class GrabbingandReleasingObjects : MonoBehaviour
         }
     }    
 
-    Vector3 velocity;
-    Vector3 angularVelocity;
-
     void Awake()
     {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
     }
 
-    private void Start()
+    void Start()
     {
-        joint = transform.GetComponent<FixedJoint>();
+        joint = GetComponent<FixedJoint>();
     }
 
     private void FixedUpdate()
-    {
-        //if (objectInHand != null)
-        //{
-        //    if (objectGrabbed && !objectReleased)
-        //    {
-        //        objectInHand.transform.position = hand.transform.position;
-        //        objectInHand.transform.rotation = hand.transform.rotation;
-        //        objectInHand.GetComponent<Rigidbody>().useGravity = false;
-        //        objectInHand.GetComponent<Rigidbody>().isKinematic = true;
-        //    }
-        //}
+    {    
+        if (objectInHand != null)
+        {
+            if (objectGrabbed && !objectReleased)
+            {
+                objectInHand.transform.position = hand.transform.position;
+                objectInHand.transform.rotation = hand.transform.rotation;
+                objectInHand.GetComponent<Rigidbody>().useGravity = false;
+                objectInHand.GetComponent<Rigidbody>().isKinematic = true;
+            }
+        }
+    }
 
-        velocity = Controller.velocity;
-        //angularVelocity = Controller.angularVelocity;
-        Debug.Log("Controller Velocity!" + velocity);
-        Debug.Log(Controller);
+    private void Update()
+    {
+       // Debug.Log(gameObject.GetComponent<Rigidbody>().velocity.normalized);
+
+        //Debug.Log("object velo" + objectInHand.GetComponent<Rigidbody>().velocity.x);
+        //Debug.Log("controller velo" + Controller.velocity.x);
     }
 
     //when the controllers collide with the grabbable object
@@ -79,6 +81,8 @@ public class GrabbingandReleasingObjects : MonoBehaviour
         objectGrabbed = true;
         objectReleased = false;
         objectInHand = CollidingObject;
+        CollidingObject = null;
+
         joint.connectedBody = objectInHand.GetComponent<Rigidbody>();
     }
 
@@ -89,10 +93,15 @@ public class GrabbingandReleasingObjects : MonoBehaviour
         objectGrabbed = false;
         if (objectInHand != null)
         {
+            joint.connectedBody = null;
+
             objectInHand.GetComponent<Rigidbody>().useGravity = true;
             objectInHand.GetComponent<Rigidbody>().isKinematic = false;
+            objectInHand.GetComponent<Rigidbody>().AddForce(gameObject.GetComponent<Rigidbody>().velocity.normalized * 10, ForceMode.Force);
+            objectInHand.GetComponent<Rigidbody>().angularVelocity = gameObject.GetComponent<Rigidbody>().angularVelocity.normalized * 10;
+
+            Debug.Log(objectInHand.GetComponent<Rigidbody>().velocity);
         }
-        joint.connectedBody = null;
         objectInHand = null;
     }
 

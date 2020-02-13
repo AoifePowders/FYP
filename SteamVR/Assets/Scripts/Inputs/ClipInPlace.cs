@@ -11,6 +11,9 @@ public class ClipInPlace : MonoBehaviour
     GrabbingandReleasingObjects garoLeft;
 
     bool released = false;
+    RaycastHit hit;
+
+    public GameObject location;
 
     private void Start()
     {
@@ -31,25 +34,38 @@ public class ClipInPlace : MonoBehaviour
         {
             released = false;
         }
+        CastRay();
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void CastRay()
     {
-        if (other.gameObject.tag == "grabbable")
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit))
         {
-            Destroy(other.gameObject.GetComponent<Rigidbody>());
-            other.transform.position = transform.position;
-            other.transform.rotation = transform.rotation;
+            if (hit.collider.tag == location.tag && released)
+            {
+                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.blue);
+                transform.position = location.transform.position;
+            }
         }
     }
 
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "grabbable")
-        {
-            other.gameObject.AddComponent<Rigidbody>();
-            other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
-            other.gameObject.GetComponent<Rigidbody>().useGravity = true;
-        }
-    }
+    //public void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.tag == "grabbable")
+    //    {
+    //        Destroy(other.gameObject.GetComponent<Rigidbody>());
+    //        other.transform.position = transform.position;
+    //        other.transform.rotation = transform.rotation;
+    //    }
+    //}
+
+    //public void OnTriggerExit(Collider other)
+    //{
+    //    if (other.gameObject.tag == "grabbable")
+    //    {
+    //        other.gameObject.AddComponent<Rigidbody>();
+    //        other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+    //        other.gameObject.GetComponent<Rigidbody>().useGravity = true;
+    //    }
+    //}
 }

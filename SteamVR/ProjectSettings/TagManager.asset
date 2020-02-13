@@ -4,25 +4,15 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Leg
-  - SnapCube
-  - Arm
-  - SnapCylinder
-  - Saucers
-  - ExcludeTeleport
-  - Torso
-  - Head
   - grabbable
-  - Button
-  - Dial
-  - Hand
-  - projectile
-  - DistanceGrab
-  - FxTemporaire
-  - TeleportIgnore
-  - ropePart
   - Drawer
+  - Hand
   - 2HandGrab
+  - ropePart
+  - Button
+  - UI
+  - UIButton
+  - LeverCollision
   layers:
   - Default
   - TransparentFX
@@ -32,9 +22,9 @@ TagManager:
   - UI
   - 
   - 
-  - BatFollower
-  - Hands
-  - Head
+  - 
+  - 
+  - 
   - 
   - 
   - 

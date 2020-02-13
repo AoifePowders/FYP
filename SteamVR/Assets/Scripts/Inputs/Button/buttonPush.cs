@@ -9,9 +9,9 @@ public class buttonPush : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Button")
+        //unity struggles with string to string comparison
+        if(other.CompareTag("Button"))
         {
-            Debug.Log("hi");
             Instantiate(boxPrefab, spawnPoint.position, Quaternion.identity);
         }
     }

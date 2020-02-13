@@ -12,8 +12,9 @@ public class DoorGrabbable : MonoBehaviour
     GrabbingandReleasingObjects garoRight;
     GrabbingandReleasingObjects garoLeft;
 
-    Vector3 startPosition;
-    GameObject drawer;
+    GameObject[] drawers;
+    int counter = 0;
+    List<Vector3> SaveList;
 
     private void Start()
     {
@@ -23,17 +24,27 @@ public class DoorGrabbable : MonoBehaviour
         garoRight = right.GetComponent<GrabbingandReleasingObjects>();
         garoLeft = left.GetComponent<GrabbingandReleasingObjects>();
 
-        drawer = GameObject.FindGameObjectWithTag("Drawer");
-        startPosition = drawer.transform.position;
+        drawers = GameObject.FindGameObjectsWithTag("Drawer");
+
+        SaveList = new List<Vector3>();
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Drawer");
+        foreach (GameObject GO in objectsWithTag)
+        {
+            SaveList.Add(GO.transform.position);//use GO.transform to add the transform in the list
+        }
     }
 
     void Update()
     {
+        counter = 0;
         if (garoRight.objectReleased || garoLeft.objectReleased)
         {
             transform.position = handle.transform.position;
             transform.rotation = handle.transform.rotation;
-            drawer.transform.position = startPosition;     
+            for (int i = 0; i < SaveList.Count; i++)
+            {
+                drawers[i].transform.position = SaveList[i];
+            }
         }
 
         this.GetComponent<Rigidbody>().useGravity = false;
