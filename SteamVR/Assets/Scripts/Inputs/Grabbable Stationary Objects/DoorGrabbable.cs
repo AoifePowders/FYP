@@ -41,6 +41,7 @@ public class DoorGrabbable : MonoBehaviour
         {
             transform.position = handle.transform.position;
             transform.rotation = handle.transform.rotation;
+
             for (int i = 0; i < SaveList.Count; i++)
             {
                 drawers[i].transform.position = SaveList[i];

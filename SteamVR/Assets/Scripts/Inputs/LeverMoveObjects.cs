@@ -6,15 +6,36 @@ public class LeverMoveObjects : MonoBehaviour
 {
     public GameObject car;
 
-    private void OnTriggerEnter(Collider other)
+    public string degreeOfMovement;
+
+    private void Update()
     {
-        //if(other.tag == "LeverCollision")
-        //{
-           // if(other.name == "Forward")
-            //{
-                Debug.Log("forward");
-               // car.transform.position = Vector3.MoveTowards(car.transform.position, Vector3.forward, 1.0f * Time.deltaTime);
-            //}
-        //}      
+        switch(degreeOfMovement)
+        {
+            case "Horizontal":
+                if (transform.eulerAngles.x <= 55 && transform.eulerAngles.x >= 45)
+                {
+                    car.transform.position += Vector3.right * 0.005f;
+                }
+
+                if (transform.eulerAngles.x <= 340 && transform.eulerAngles.x >= 300)
+                {
+                    car.transform.position += Vector3.left * 0.005f;
+                }
+                break;
+            case "Vertical":
+                if (transform.eulerAngles.x <= 55 && transform.eulerAngles.x >= 45)
+                {
+                    car.transform.position += Vector3.forward * 0.005f;
+                }
+
+                if (transform.eulerAngles.x <= 340 && transform.eulerAngles.x >= 300)
+                {
+                    car.transform.position += Vector3.back * 0.005f;
+                }
+                break;
+        }
+
     }
+
 }
