@@ -13,6 +13,7 @@ TagManager:
   - UI
   - UIButton
   - LeverCollision
+  - Active
   layers:
   - Default
   - TransparentFX
