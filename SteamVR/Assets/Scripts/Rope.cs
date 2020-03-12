@@ -12,6 +12,12 @@ public class Rope : MonoBehaviour
 
     public bool reset, spawn, snapFirst, snapLast;
 
+    private void Start()
+    {
+        spawn = true;
+        snapFirst = true;
+    }
+
     // Update is called once per frame
     void Update()
     {
