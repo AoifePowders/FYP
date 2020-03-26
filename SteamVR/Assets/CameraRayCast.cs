@@ -12,11 +12,11 @@ public class CameraRayCast : MonoBehaviour
         {
             if (hit.collider.CompareTag("Hand"))
             {
-                GameObject.Find("HandMenu").SetActive(true);
+                //GameObject.Find("HandMenu").SetActive(true);
             }
             else
             {
-                GameObject.Find("HandMenu").SetActive(false);
+                //GameObject.Find("HandMenu").SetActive(false);
             }
         }
     }

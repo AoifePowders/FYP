@@ -13,11 +13,13 @@ public class GrabbingandReleasingObjects : MonoBehaviour
     public bool objectGrabbed = false;
     public bool objectReleased = false;
 
-    FixedJoint joint;
+    public FixedJoint joint;
     public GameObject hand;
 
+    RaycastHit hit;
+
     Vector3 velo = new Vector3();
-   
+
     private SteamVR_TrackedObject trackedObj;
     private SteamVR_Controller.Device Controller
     {
@@ -25,7 +27,7 @@ public class GrabbingandReleasingObjects : MonoBehaviour
         {
             return SteamVR_Controller.Input((int)trackedObj.index);
         }
-    }    
+    }
 
     void Awake()
     {
@@ -38,7 +40,7 @@ public class GrabbingandReleasingObjects : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {    
+    {
         if (objectInHand != null)
         {
             if (objectGrabbed && !objectReleased)
@@ -53,7 +55,8 @@ public class GrabbingandReleasingObjects : MonoBehaviour
 
     private void Update()
     {
-       // Debug.Log(gameObject.GetComponent<Rigidbody>().velocity.normalized);
+        CastRay();
+        // Debug.Log(gameObject.GetComponent<Rigidbody>().velocity.normalized);
 
         //Debug.Log("object velo" + objectInHand.GetComponent<Rigidbody>().velocity.x);
         //Debug.Log("controller velo" + Controller.velocity.x);
@@ -61,22 +64,22 @@ public class GrabbingandReleasingObjects : MonoBehaviour
 
     //when the controllers collide with the grabbable object
     //picking up objects with rigidbodies
-    public void OnTriggerStay(Collider other) 
+    public void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.GetComponent<Rigidbody>() && other.gameObject.tag == "grabbable" || other.gameObject.tag == "2HandGrab")
+        if (other.gameObject.GetComponent<Rigidbody>() && other.gameObject.tag == "grabbable" || other.gameObject.tag == "ForceGrab")
         {
-            CollidingObject = other.gameObject;    
+            CollidingObject = other.gameObject;
         }
     }
 
     // releasing those objects with rigidbodies
-    public void OnTriggerExit(Collider other) 
+    public void OnTriggerExit(Collider other)
     {
         CollidingObject = null;
     }
 
     //create parentchild relationship between object and hand so object follows hand
-    public void GrabObject() 
+    public void GrabObject()
     {
         objectGrabbed = true;
         objectReleased = false;
@@ -103,6 +106,31 @@ public class GrabbingandReleasingObjects : MonoBehaviour
             Debug.Log(objectInHand.GetComponent<Rigidbody>().velocity);
         }
         objectInHand = null;
+    }
+
+    public void CastRay()
+    {
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit))
+        {
+            if (hit.collider.CompareTag("ForceGrab"))
+            {
+                if (objectGrabbed && !objectReleased)
+                {
+                    hit.transform.position = Vector3.MoveTowards(hit.transform.position, transform.position, 0.1f);
+                }
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("ForceGrab"))
+        {
+            if (objectGrabbed && !objectReleased)
+            {
+                objectInHand = hit.collider.gameObject;
+            }
+        }
     }
 
 }

@@ -41,7 +41,6 @@ public class ButtonGameTimer : MonoBehaviour
         else
         {
             GameObject.Find("ButtonStart").GetComponent<PlayButtonGame>().playGame = false;
-            Debug.Log(GameObject.Find("ButtonStart").GetComponent<PlayButtonGame>().playGame);
         }
 
         double displayTime = System.Math.Round(time, 1);

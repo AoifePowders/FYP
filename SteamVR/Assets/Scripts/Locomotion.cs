@@ -8,6 +8,8 @@ public class Locomotion : MonoBehaviour
     public GameObject player;
     public GameObject HMD;
 
+    RaycastHit hit;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +19,7 @@ public class Locomotion : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Move()
@@ -34,5 +36,17 @@ public class Locomotion : MonoBehaviour
     {
         Quaternion newRotation = Quaternion.AngleAxis(45, Vector3.up);
         player.transform.rotation = Quaternion.Slerp(player.transform.rotation, player.transform.rotation * newRotation, 1f);
+    }
+
+    public void CastRay()
+    {
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit))
+        {
+            if (hit.collider.CompareTag("WayPoint"))
+            {
+                float pos = player.transform.position.y;
+                player.transform.position = new Vector3 (hit.transform.position.x, pos, hit.transform.position.z);
+            }
+        }
     }
 }

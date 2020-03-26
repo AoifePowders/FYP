@@ -14,6 +14,8 @@ TagManager:
   - UIButton
   - LeverCollision
   - Active
+  - ForceGrab
+  - WayPoint
   layers:
   - Default
   - TransparentFX
