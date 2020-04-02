@@ -29,13 +29,12 @@ public class GrabbingandReleasingObjects : MonoBehaviour
         }
     }
 
-    void Awake()
-    {
-        trackedObj = GetComponent<SteamVR_TrackedObject>();
-    }
+    private bool throwing;
+    private Rigidbody rigidbody;
 
     void Start()
     {
+        trackedObj = GetComponent<SteamVR_TrackedObject>();
         joint = GetComponent<FixedJoint>();
     }
 
@@ -51,11 +50,41 @@ public class GrabbingandReleasingObjects : MonoBehaviour
                 objectInHand.GetComponent<Rigidbody>().isKinematic = true;
             }
         }
+
+        if (throwing)
+        {
+            Transform origin;
+            if (trackedObj.origin != null)
+            {
+                origin = trackedObj.origin;
+            }
+            else
+            {
+                origin = trackedObj.transform.parent;
+            }
+
+            if (origin != null)
+            {
+                objectInHand.GetComponent<Rigidbody>().velocity = origin.TransformVector(Controller.velocity);
+                objectInHand.GetComponent<Rigidbody>().angularVelocity = origin.TransformVector(Controller.angularVelocity * 0.25f);
+            }
+            else
+            {
+                objectInHand.GetComponent<Rigidbody>().velocity = Controller.velocity;
+                objectInHand.GetComponent<Rigidbody>().angularVelocity = Controller.angularVelocity * 0.25f;
+            }
+
+            objectInHand.GetComponent<Rigidbody>().maxAngularVelocity = rigidbody.angularVelocity.magnitude;
+
+            throwing = false;
+        }
     }
 
     private void Update()
     {
         CastRay();
+
+        var device = SteamVR_Controller.Input((int)trackedObj.index);
         // Debug.Log(gameObject.GetComponent<Rigidbody>().velocity.normalized);
 
         //Debug.Log("object velo" + objectInHand.GetComponent<Rigidbody>().velocity.x);
@@ -85,6 +114,7 @@ public class GrabbingandReleasingObjects : MonoBehaviour
         objectReleased = false;
         objectInHand = CollidingObject;
         CollidingObject = null;
+        throwing = false;
 
         joint.connectedBody = objectInHand.GetComponent<Rigidbody>();
     }
@@ -100,10 +130,11 @@ public class GrabbingandReleasingObjects : MonoBehaviour
 
             objectInHand.GetComponent<Rigidbody>().useGravity = true;
             objectInHand.GetComponent<Rigidbody>().isKinematic = false;
-            objectInHand.GetComponent<Rigidbody>().AddForce(gameObject.GetComponent<Rigidbody>().velocity.normalized * 10, ForceMode.Force);
-            objectInHand.GetComponent<Rigidbody>().angularVelocity = gameObject.GetComponent<Rigidbody>().angularVelocity.normalized * 10;
+            throwing = true;
+            //objectInHand.GetComponent<Rigidbody>().AddForce(gameObject.GetComponent<Rigidbody>().velocity.normalized * 10, ForceMode.Force);
+            //objectInHand.GetComponent<Rigidbody>().angularVelocity = gameObject.GetComponent<Rigidbody>().angularVelocity.normalized * 10;
 
-            Debug.Log(objectInHand.GetComponent<Rigidbody>().velocity);
+            //Debug.Log(objectInHand.GetComponent<Rigidbody>().velocity);
         }
         objectInHand = null;
     }

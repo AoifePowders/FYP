@@ -5,15 +5,30 @@ using UnityEngine.UI;
 
 public class UISelect : MonoBehaviour
 {
-    public Button button;
+    Button[] buttons;
     RaycastHit hit;
-    public Image image;
+    public Transform panel;
+    public Button startButton;
 
     bool clicked = false;
     bool buttonHit = false;
+    bool otherButtonHit = false;
+
+    public bool playGame = false;
+    public bool startTimer = false;
+
+    int score = 0;
+    public Text scoreText;
+
+    public GameObject start, middle, end;
+    public LineRenderer _line;
+    public int numberOfPoints = 20;
 
     private void Start()
-    {      
+    {
+        _line = gameObject.GetComponent<LineRenderer>();
+        _line.enabled = false;
+        buttons = panel.GetComponentsInChildren<Button>();
     }
 
     public void CastRay()
@@ -22,32 +37,49 @@ public class UISelect : MonoBehaviour
         {
             if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit))
             {
-                if (hit.collider.CompareTag("UI"))
+                //Checks if the ray has hit a waypoint and creates a line renderer with a bezier curve
+                //makes the ray fropm controller if the ray hits UI
+                if (hit.collider.CompareTag("UI") || hit.collider.CompareTag("UIButton") || hit.collider.CompareTag("WayPoint") || hit.collider.CompareTag("UIButton") && hit.collider.name == "StartButton")
                 {
-                    GetComponent<SteamVR_LaserPointer>().thickness = 0.01f;
+                    _line.enabled = true;
+                    _line.SetPosition(0, transform.position);
+                    _line.SetPosition(1, hit.point);
                 }
                 else
                 {
-                    GetComponent<SteamVR_LaserPointer>().thickness = 0;
+                    _line.enabled = false;
                 }
 
-                if (hit.collider.CompareTag("UIButton"))
+                //starts the game if the ray hits and clicks the start button
+                if (hit.collider.CompareTag("UIButton") && hit.collider.name == "StartButton")
                 {
                     buttonHit = true;
-                    GetComponent<SteamVR_LaserPointer>().thickness = 0.01f;
+
                     if (!clicked)
                     {
-                        button.GetComponent<Button>().image.color = Color.green;
+                        startButton.GetComponent<Button>().image.color = Color.green;
                     }
                 }
                 else
                 {
                     buttonHit = false;
-                    button.GetComponent<Button>().image.color = Color.white;
+                    startButton.GetComponent<Button>().image.color = Color.white;
+                }
+
+                //anything to do with all other buttons in the game
+                if (hit.collider.CompareTag("UIButton"))
+                {
+                    for (int i = 0; i < buttons.Length; i++)
+                    {
+                        if (buttons[i].transform.position == hit.collider.transform.position && buttons[i].name == "Active")
+                        {
+                            otherButtonHit = true;
+                        }
+                    }
                 }
             }
         }
-        
+
     }
 
     private void Update()
@@ -58,19 +90,30 @@ public class UISelect : MonoBehaviour
     public void onClick()
     {
         clicked = true;
+
         if (buttonHit)
         {
-            button.GetComponent<Button>().image.color = Color.blue;
-            image.color = Color.cyan;
+            startButton.GetComponent<Button>().image.color = Color.blue;
+            playGame = true;
+            startTimer = true;
+        }
+
+        if (otherButtonHit)
+        {
+            score++;
+            scoreText.text = "Score: " + score;
+            this.tag = "Button";
         }
     }
 
     public void onRelease()
     {
         clicked = false;
+        startTimer = false;
+
         if (buttonHit)
         {
-            button.GetComponent<Button>().image.color = Color.green;
+            startButton.GetComponent<Button>().image.color = Color.green;
         }
     }
 }

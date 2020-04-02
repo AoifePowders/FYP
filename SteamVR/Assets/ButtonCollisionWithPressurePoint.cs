@@ -5,16 +5,15 @@ using UnityEngine.UI;
 
 public class ButtonCollisionWithPressurePoint : MonoBehaviour
 {
-    int score = 0;
     public Text scoreText;
 
     private void Update()
     {
-        if (this.CompareTag("Button"))
+        if (this.name == "Button")
         {
             transform.GetComponent<BoxCollider>().enabled = false;
         }
-        else if(this.CompareTag("Active"))
+        else if(this.name == "Active")
         {
             transform.GetComponent<BoxCollider>().enabled = true;
         }
@@ -24,11 +23,11 @@ public class ButtonCollisionWithPressurePoint : MonoBehaviour
     {
         if(other.name == "ButtonPressurePoint")
         {
-            if (this.CompareTag("Active"))
+            if (this.name == "Active")
             {
-                score++;
-                scoreText.text = "Score: " + score;
-                this.tag = "Button";
+                scoreText.GetComponent<ButtonScore>().score++;
+                scoreText.text = "Score: " + scoreText.GetComponent<ButtonScore>().score;
+                this.name = "Button";
             }
         }
     }

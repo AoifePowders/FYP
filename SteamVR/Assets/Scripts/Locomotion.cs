@@ -10,18 +10,6 @@ public class Locomotion : MonoBehaviour
 
     RaycastHit hit;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void Move()
     {
         player.GetComponent<Rigidbody>().velocity = HMD.transform.forward * speed;

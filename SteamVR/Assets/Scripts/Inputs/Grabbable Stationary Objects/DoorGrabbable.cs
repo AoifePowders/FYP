@@ -13,7 +13,6 @@ public class DoorGrabbable : MonoBehaviour
     GrabbingandReleasingObjects garoLeft;
 
     GameObject[] drawers;
-    int counter = 0;
     List<Vector3> SaveList;
 
     private void Start()
@@ -36,7 +35,6 @@ public class DoorGrabbable : MonoBehaviour
 
     void Update()
     {
-        counter = 0;
         if (garoRight.objectReleased || garoLeft.objectReleased)
         {
             transform.position = handle.transform.position;
