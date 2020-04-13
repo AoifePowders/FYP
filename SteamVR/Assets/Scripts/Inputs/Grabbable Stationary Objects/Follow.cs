@@ -6,33 +6,70 @@ public class Follow : MonoBehaviour
 {
 
     public Transform target;
+
     Rigidbody rb;
-    Vector3 endPosition;
+
+    GameObject right;
+    GameObject left;
+
+    GrabbingandReleasingObjects garoRight;
+    GrabbingandReleasingObjects garoLeft;
+
+    Vector3 ogPos;
+    Vector3 ogRot;
+
+    public string hand;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        endPosition = transform.position + new Vector3(0, 0, 0.3f);
+
+        right = FindObjectOfType<GameManager>().rightHand;
+        left = FindObjectOfType<GameManager>().leftHand;
+
+        garoRight = right.GetComponent<GrabbingandReleasingObjects>();
+        garoLeft = left.GetComponent<GrabbingandReleasingObjects>();
+
+        ogPos = transform.position;
+        ogRot = new Vector3(0,0,0);
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        if (transform.tag == "Drawer")
+        switch (hand)
         {
-            if(transform.position.z >= endPosition.z)
-            {
-                transform.position = endPosition;
-            }
-            else
-            {
-                rb.MovePosition(target.transform.position);
-            }
-        }
-        else
-        {
-            rb.MovePosition(target.transform.position);
-        }
+            case "Right":
+                if (garoRight.objectGrabbed)
+                {
+                    if (garoRight.objectInHand.name == "Grabbable Knob Right")
+                    {
+                        rb.MovePosition(target.transform.position);
+                    }
+                }
+                else
+                {
+                    transform.position = ogPos;
+                    transform.rotation = Quaternion.Euler(ogRot);
+                }
+                break;
+            case "Left":
+                if (garoLeft.objectGrabbed)
+                {
 
+                    if (garoLeft.objectInHand.name == "Grabbable Knob Left")
+                    {
+                        rb.MovePosition(target.transform.position);
+                    }
+                }
+                else
+                {
+                    transform.position = ogPos;
+                    transform.rotation = Quaternion.Euler(ogRot);
+                }
+                break;
+        }
     }
+
 }

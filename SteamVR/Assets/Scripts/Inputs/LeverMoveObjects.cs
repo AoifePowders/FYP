@@ -13,23 +13,23 @@ public class LeverMoveObjects : MonoBehaviour
         switch(degreeOfMovement)
         {
             case "Horizontal":
-                if (transform.eulerAngles.x <= 55 && transform.eulerAngles.x >= 45)
+                if (transform.eulerAngles.x <= 70 && transform.eulerAngles.x >= 15)
                 {
                     car.transform.position += Vector3.right * 0.005f;
                 }
 
-                if (transform.eulerAngles.x <= 340 && transform.eulerAngles.x >= 300)
+                if (transform.eulerAngles.x <= 340 && transform.eulerAngles.x >= 285)
                 {
                     car.transform.position += Vector3.left * 0.005f;
                 }
                 break;
             case "Vertical":
-                if (transform.eulerAngles.x <= 55 && transform.eulerAngles.x >= 45)
+                if (transform.eulerAngles.x <= 70 && transform.eulerAngles.x >= 15)
                 {
                     car.transform.position += Vector3.forward * 0.005f;
                 }
 
-                if (transform.eulerAngles.x <= 340 && transform.eulerAngles.x >= 300)
+                if (transform.eulerAngles.x <= 340 && transform.eulerAngles.x >= 285)
                 {
                     car.transform.position += Vector3.back * 0.005f;
                 }

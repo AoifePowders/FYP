@@ -40,16 +40,7 @@ public class GrabbingandReleasingObjects : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (objectInHand != null)
-        {
-            if (objectGrabbed && !objectReleased)
-            {
-                objectInHand.transform.position = hand.transform.position;
-                objectInHand.transform.rotation = hand.transform.rotation;
-                objectInHand.GetComponent<Rigidbody>().useGravity = false;
-                objectInHand.GetComponent<Rigidbody>().isKinematic = true;
-            }
-        }
+
 
         if (throwing)
         {
@@ -63,18 +54,21 @@ public class GrabbingandReleasingObjects : MonoBehaviour
                 origin = trackedObj.transform.parent;
             }
 
-            if (origin != null)
+            if (objectInHand != null)
             {
-                objectInHand.GetComponent<Rigidbody>().velocity = origin.TransformVector(Controller.velocity);
-                objectInHand.GetComponent<Rigidbody>().angularVelocity = origin.TransformVector(Controller.angularVelocity * 0.25f);
-            }
-            else
-            {
-                objectInHand.GetComponent<Rigidbody>().velocity = Controller.velocity;
-                objectInHand.GetComponent<Rigidbody>().angularVelocity = Controller.angularVelocity * 0.25f;
-            }
+                if (origin != null)
+                {
+                    objectInHand.GetComponent<Rigidbody>().velocity = origin.TransformVector(Controller.velocity);
+                    objectInHand.GetComponent<Rigidbody>().angularVelocity = origin.TransformVector(Controller.angularVelocity * 0.25f);
+                }
+                else
+                {
+                    objectInHand.GetComponent<Rigidbody>().velocity = Controller.velocity;
+                    objectInHand.GetComponent<Rigidbody>().angularVelocity = Controller.angularVelocity * 0.25f;
+                }
 
-            objectInHand.GetComponent<Rigidbody>().maxAngularVelocity = rigidbody.angularVelocity.magnitude;
+                objectInHand.GetComponent<Rigidbody>().maxAngularVelocity = rigidbody.angularVelocity.magnitude;
+            }
 
             throwing = false;
         }
@@ -82,6 +76,17 @@ public class GrabbingandReleasingObjects : MonoBehaviour
 
     private void Update()
     {
+        if (objectInHand != null)
+        {
+            if (objectGrabbed && !objectReleased)
+            {
+                objectInHand.transform.localPosition = hand.transform.position;
+                objectInHand.transform.localRotation = hand.transform.rotation;
+                objectInHand.GetComponent<Rigidbody>().useGravity = false;
+                objectInHand.GetComponent<Rigidbody>().isKinematic = true;
+            }
+        }
+
         CastRay();
 
         var device = SteamVR_Controller.Input((int)trackedObj.index);

@@ -4,68 +4,17 @@ using UnityEngine;
 
 public class ClipInPlace : MonoBehaviour
 {
-    GameObject right;
-    GameObject left;
 
-    GrabbingandReleasingObjects garoRight;
-    GrabbingandReleasingObjects garoLeft;
-
-    bool released = false;
-    RaycastHit hit;
-
-    public GameObject location;
-
-    private void Start()
+    public void OnTriggerStay(Collider other)
     {
-        right = FindObjectOfType<GameManager>().rightHand;
-        left = FindObjectOfType<GameManager>().leftHand;
-
-        garoRight = right.GetComponent<GrabbingandReleasingObjects>();
-        garoLeft = left.GetComponent<GrabbingandReleasingObjects>();
-    }
-
-    void Update()
-    {
-        if (garoRight.objectReleased || garoLeft.objectReleased)
+        if (other.CompareTag("grabbable"))
         {
-            released = true;
-        }
-        else
-        {
-            released = false;
-        }
-        CastRay();
-    }
-
-    public void CastRay()
-    {
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit))
-        {
-            if (hit.collider.tag == location.tag && released)
+            if (other.name == name)
             {
-                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.blue);
-                transform.position = location.transform.position;
+                other.gameObject.GetComponent<Rigidbody>().useGravity = false;
+                other.transform.position = transform.position;
+                other.transform.localEulerAngles = transform.localEulerAngles;
             }
         }
     }
-
-    //public void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.tag == "grabbable")
-    //    {
-    //        Destroy(other.gameObject.GetComponent<Rigidbody>());
-    //        other.transform.position = transform.position;
-    //        other.transform.rotation = transform.rotation;
-    //    }
-    //}
-
-    //public void OnTriggerExit(Collider other)
-    //{
-    //    if (other.gameObject.tag == "grabbable")
-    //    {
-    //        other.gameObject.AddComponent<Rigidbody>();
-    //        other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
-    //        other.gameObject.GetComponent<Rigidbody>().useGravity = true;
-    //    }
-    //}
 }
