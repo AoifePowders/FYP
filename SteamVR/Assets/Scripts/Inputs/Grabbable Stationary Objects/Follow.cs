@@ -57,7 +57,6 @@ public class Follow : MonoBehaviour
             case "Left":
                 if (garoLeft.objectGrabbed)
                 {
-
                     if (garoLeft.objectInHand.name == "Grabbable Knob Left")
                     {
                         rb.MovePosition(target.transform.position);

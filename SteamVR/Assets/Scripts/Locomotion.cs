@@ -8,6 +8,8 @@ public class Locomotion : MonoBehaviour
     public GameObject player;
     public GameObject HMD;
 
+    GameObject waypointcollidedwith;
+
     RaycastHit hit;
 
     public void Move()
@@ -33,7 +35,7 @@ public class Locomotion : MonoBehaviour
             if (hit.collider.CompareTag("WayPoint"))
             {
                 float pos = player.transform.position.y;
-                player.transform.position = new Vector3 (hit.transform.position.x, pos, hit.transform.position.z);
+                player.transform.position = new Vector3(hit.transform.position.x, player.transform.position.y, hit.transform.position.z);
             }
         }
     }

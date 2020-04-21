@@ -8,13 +8,18 @@ public class RandomColorChange : MonoBehaviour
     int UIcount = 0;
     Button buttonChild;
     bool startUI = false;
-    public GameObject rHand;
+    public GameObject ButtonTimerScript;
+
+    private void Start()
+    {
+        //startUI = gameObje
+    }
 
     // Update is called once per frame
     void Update()
     {
         //UI Button Game
-        startUI = rHand.GetComponent<UISelect>().playGame;
+        startUI = ButtonTimerScript.GetComponent<CanvasButtonGameTimer>().start;
         if (startUI)
         {
             UIcount += 1;
@@ -28,6 +33,10 @@ public class RandomColorChange : MonoBehaviour
                 changeUIBack();
                 UIcount = 0;
             }
+        }
+        else
+        {
+            changeUIBack();
         }
     }
     

@@ -20,61 +20,56 @@ public class UISelect : MonoBehaviour
     int score = 0;
     public Text scoreText;
 
-    public GameObject start, middle, end;
     public LineRenderer _line;
-    public int numberOfPoints = 20;
 
     private void Start()
     {
         _line = gameObject.GetComponent<LineRenderer>();
-        _line.enabled = false;
+        _line.enabled = true;
         buttons = panel.GetComponentsInChildren<Button>();
     }
 
     public void CastRay()
     {
-        if (GetComponent<SteamVR_LaserPointer>() != null)
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit))
         {
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit))
+            //Checks if the ray has hit a waypoint and creates a line renderer
+            //makes the ray fropm controller if the ray hits UI
+            if (hit.collider.CompareTag("UI") || hit.collider.CompareTag("UIButton") || hit.collider.CompareTag("WayPoint") || hit.collider.CompareTag("UIButton") && hit.collider.name == "StartButton")
             {
-                //Checks if the ray has hit a waypoint and creates a line renderer with a bezier curve
-                //makes the ray fropm controller if the ray hits UI
-                if (hit.collider.CompareTag("UI") || hit.collider.CompareTag("UIButton") || hit.collider.CompareTag("WayPoint") || hit.collider.CompareTag("UIButton") && hit.collider.name == "StartButton")
-                {
-                    _line.enabled = true;
-                    _line.SetPosition(0, transform.position);
-                    _line.SetPosition(1, hit.point);
-                }
-                else
-                {
-                    _line.enabled = false;
-                }
+                _line.enabled = true;
+                _line.SetPosition(0, transform.position);
+                _line.SetPosition(1, hit.point);
+            }
+            else
+            {
+                _line.enabled = false;
+            }
 
-                //starts the game if the ray hits and clicks the start button
-                if (hit.collider.CompareTag("UIButton") && hit.collider.name == "StartButton")
-                {
-                    buttonHit = true;
+            //starts the game if the ray hits and clicks the start button
+            if (hit.collider.CompareTag("UIButton") && hit.collider.name == "StartButton")
+            {
+                buttonHit = true;
 
-                    if (!clicked)
+                if (!clicked)
+                {
+                    startButton.GetComponent<Button>().image.color = Color.green;
+                }
+            }
+            else
+            {
+                buttonHit = false;
+                startButton.GetComponent<Button>().image.color = Color.white;
+            }
+
+            //anything to do with all other buttons in the game
+            if (hit.collider.CompareTag("UIButton"))
+            {
+                for (int i = 0; i < buttons.Length; i++)
+                {
+                    if (buttons[i].transform.position == hit.collider.transform.position && buttons[i].name == "Active")
                     {
-                        startButton.GetComponent<Button>().image.color = Color.green;
-                    }
-                }
-                else
-                {
-                    buttonHit = false;
-                    startButton.GetComponent<Button>().image.color = Color.white;
-                }
-
-                //anything to do with all other buttons in the game
-                if (hit.collider.CompareTag("UIButton"))
-                {
-                    for (int i = 0; i < buttons.Length; i++)
-                    {
-                        if (buttons[i].transform.position == hit.collider.transform.position && buttons[i].name == "Active")
-                        {
-                            otherButtonHit = true;
-                        }
+                        otherButtonHit = true;
                     }
                 }
             }
