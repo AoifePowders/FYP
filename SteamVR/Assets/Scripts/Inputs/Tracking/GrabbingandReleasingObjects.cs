@@ -22,9 +22,6 @@ public class GrabbingandReleasingObjects : MonoBehaviour
 
     private Rigidbody rigidbody;
 
-    public GameObject projectile;
-    public Transform gun;
-    GameObject instantiatedProjectile;
 
     void Start()
     {
@@ -147,15 +144,4 @@ public class GrabbingandReleasingObjects : MonoBehaviour
             }
         }
     }
-
-    public void shoot()
-    {
-        if (objectInHand.name == "Gun")
-        {
-            instantiatedProjectile = Instantiate(projectile);
-            instantiatedProjectile.transform.position = gun.position;
-            instantiatedProjectile.transform.rotation = gun.rotation;
-        }
-    }
-
 }
