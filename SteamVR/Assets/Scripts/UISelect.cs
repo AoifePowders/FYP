@@ -35,7 +35,7 @@ public class UISelect : MonoBehaviour
         {
             //Checks if the ray has hit a waypoint and creates a line renderer
             //makes the ray fropm controller if the ray hits UI
-            if (hit.collider.CompareTag("ForceGrab") || hit.collider.CompareTag("UI") || hit.collider.CompareTag("UIButton") || hit.collider.CompareTag("WayPoint") || hit.collider.CompareTag("UIButton") && hit.collider.name == "StartButton")
+            if (hit.collider.CompareTag("ForceGrab") || hit.collider.CompareTag("UI") || hit.collider.CompareTag("UIButton") || hit.collider.CompareTag("WayPoint") || hit.collider.CompareTag("UIButton") && hit.collider.name == "StartButton" || hit.collider.CompareTag("ArrowKeys"))
             {
                 _line.enabled = true;
                 _line.SetPosition(0, transform.position);
@@ -62,7 +62,7 @@ public class UISelect : MonoBehaviour
                 startButton.GetComponent<Button>().image.color = Color.white;
             }
 
-            //anything to do with all other buttons in the game
+            //button game canvas checks if button is active
             if (hit.collider.CompareTag("UIButton"))
             {
                 for (int i = 0; i < buttons.Length; i++)
@@ -72,6 +72,19 @@ public class UISelect : MonoBehaviour
                         otherButtonHit = true;
                     }
                 }
+            }
+
+            if (hit.collider.CompareTag("ArrowKeys"))
+            {
+                if(clicked)
+                {
+                    hit.collider.name = "Active";
+                }
+                else
+                {
+                    hit.collider.name = "ArrowKey";
+                }
+
             }
         }
 

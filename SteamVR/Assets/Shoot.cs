@@ -24,14 +24,17 @@ public class Shoot : MonoBehaviour
 
     public void shoot()
     {
-        if (garoRight.objectInHand.name == "Gun")
+        if (garoRight.objectInHand != null)
         {
-            if (ammo <= 15 && ammo >= 0)
+            if (garoRight.objectInHand.name == "Gun")
             {
-                instantiatedProjectile = Instantiate(projectile);
-                instantiatedProjectile.transform.position = transform.position;
-                instantiatedProjectile.transform.rotation = transform.rotation;
-                ammo--;
+                if (ammo <= 15 && ammo >= 0)
+                {
+                    instantiatedProjectile = Instantiate(projectile);
+                    instantiatedProjectile.transform.position = transform.position;
+                    instantiatedProjectile.transform.rotation = transform.rotation;
+                    ammo--;
+                }
             }
         }
     }

@@ -27,5 +27,14 @@ public class moveProjectile : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.name == "Target")
+        {
+            Debug.Log("here");
+            Destroy(this);
+        }
+    }
 }
 
